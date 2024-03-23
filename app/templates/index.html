@@ -1,12 +1,27 @@
 <!-- templates/index.html -->
-
 {% extends 'base.html' %}
-
 {% block content %}
-
-<h1 class="text-blue-600">News media classifier</h1>
-<button hx-get="/data" hx-target="#data">Get data</button>
-
-<div id="data"></div>
-
+    <h1 class="text-blue-600">News media classifier</h1>
+    <button hx-get="/data" hx-target="#data">Get data</button>
+    <div id="data"></div>
+    <section class="flex h-96 overflow-y-scroll">
+        <div id="left" class="w-1/2 bg-red-200 p-4">
+            <div class="bg-gray-50  flex items-center justify-center px-8 py-4">
+                <div class="relative w-full max-w-lg">
+                    <!-- <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob "> -->
+                    <!-- </div> -->
+                    <!-- <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"> -->
+                    <!-- </div> -->
+                    <div class="absolute -bottom-32 left-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000">
+                    </div>
+                    <div class="relative space-y-4 max-h-80 overflow-y-scroll">
+                        {% for article in articles %}
+                            {% include 'list-item.html' %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="right" class="w-1/2 bg-green-200"></div>
+    </section>
 {% endblock content %}
