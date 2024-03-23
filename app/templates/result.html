@@ -1,7 +1,3 @@
-<h1>Result Page</h1>
-<p>Links submitted:</p>
-<ul>
-    {% for link in links %}
-    <li>Link: {{ link }}</li>
-    {% endfor %}
-</ul>
+{% for link in links %}
+ {% include 'list-item.html' %}
+{% endfor %}
