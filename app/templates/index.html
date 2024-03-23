@@ -1,10 +1,7 @@
 <!-- templates/index.html -->
 {% extends 'base.html' %}
 {% block content %}
-    <h1 class="text-blue-600">News media classifier</h1>
-    <button hx-get="/data" hx-target="#data">Get data</button>
-    <div id="data"></div>
-    <section class="flex overflow-y-scroll">
+    <section class="pt-12 flex overflow-y-scroll">
         <div id="left" class="w-1/2 pt-24 p-4">
             <div class="bg-gray-50  flex items-center justify-center px-8 py-4">
                 <div class="relative w-full max-w-lg">
