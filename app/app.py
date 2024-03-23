@@ -4,6 +4,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+links_list = []
 
 @app.route("/")
 def index():
@@ -13,6 +14,18 @@ def index():
 @app.route("/data")
 def data():
     return render_template("data.html")
+
+@app.route("/form")
+def form():
+    return render_template("form.html")
+
+@app.route('/submit', methods=["POST"])
+def submit_form():
+    global links_list
+    links = [request.form.get(f"link{i}") for i in range(1,4)]
+    links_list.extend(links)
+    print("Links list:", links_list)
+    return render_template('result.html', links=links_list)
 
 
 @app.route("/news", methods=["POST"])
@@ -51,3 +64,6 @@ def get_clickbaitness(scores) -> float:
             return 1 - score["score"]
         if score["label"] == "not clickbait":
             return score["score"]
+
+if __name__ == "__main__":
+    app.run(debug=True)
