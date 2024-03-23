@@ -32,7 +32,7 @@ def get_score(url: str) -> float:
 def get_metadata(url: str):
     metadata_request = {"content": url, "language": "EMPTY"}
     metadata_response = requests.post(
-        "http://localhost:8990/rest/process", json=metadata_request
+        "https://0604-93-113-114-106.ngrok-free.app/rest/process", json=metadata_request
     )
     return json.loads(metadata_response.text)
 
@@ -40,7 +40,7 @@ def get_metadata(url: str):
 def get_clickbait_score(title: str):
     click_bait_request = {"content": title, "language": "ron"}
     clickbait_response = requests.post(
-        "http://localhost:8994/rest/process", json=click_bait_request
+        "https://c952-93-113-114-106.ngrok-free.app/rest/process", json=click_bait_request
     )
     return json.loads(clickbait_response.text)
 
