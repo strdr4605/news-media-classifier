@@ -1,0 +1,31 @@
+<!-- templates/form.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h1> Post Form to Flask with HTMX</h1>
+
+<form hx-post="/submit" hx-target="#results">
+    <label for="link1">Link 1:</label>
+    <input id="link1" type="text" name="link1" required/><br>
+    <label for="link2">Link 2:</label>
+    <input id="link2" type="text" name="link2" required/><br>
+    <label for="link3">Link 3:</label>
+    <input id="link3" type="text" name="link3" required/><br>
+    <button type="submit">Submit</button>
+</form>
+<div id="results"></div>
+
+
+
+<!--<form hx-post="/submit" hx-target="result2">-->
+<!--    <label for="link2">Link:</label>-->
+<!--    <input id="link2" type="text" name="link" required/><br>-->
+<!--</form>-->
+
+<!--<form hx-post="/submit">-->
+<!--    <label for="link3">Link:</label>-->
+<!--    <input id="link3" type="text" name="link" required/><br>-->
+<!--    <button type="submit">Submit</button>-->
+<!--</form>-->
+{% endblock content %}
