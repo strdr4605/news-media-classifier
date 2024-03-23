@@ -1,19 +1,36 @@
-<!-- templates/form.html -->
-
-{% extends 'base.html' %}
-
-{% block content %}
-<h1> Post Form to Flask with HTMX</h1>
-
-<form hx-post="/submit" hx-target="#results">
-    <label for="link1">Link 1:</label>
-    <input id="link1" type="text" name="link1" required/><br>
-    <label for="link2">Link 2:</label>
-    <input id="link2" type="text" name="link2" required/><br>
-    <label for="link3">Link 3:</label>
-    <input id="link3" type="text" name="link3" required/><br>
-    <button type="submit">Submit</button>
-</form>
-<div id="results"></div>
-
-{% endblock content %}
+<div class="flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+    <form>
+      <h1 class="text-xl font-semibold mb-4">Check media source</h1>
+      <p class="text-gray-600 mb-6">
+        Insert 3 articles from the media source you want to check.
+      </p>
+      <div class="mb-4">
+        <input
+          type="text"
+          placeholder="https://diez.md/2024/03/23/tot-ce-s..."
+          class="text-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500"
+        />
+      </div>
+      <div class="mb-4">
+        <input
+          type="text"
+          placeholder="https://diez.md/2024/03/22/noi..."
+          class="text-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500"
+        />
+      </div>
+      <div class="mb-4">
+        <input
+          type="text"
+          placeholder="https://diez.md/2024/03/01/maia..."
+          class="text-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500"
+        />
+      </div>
+      <button
+        class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
