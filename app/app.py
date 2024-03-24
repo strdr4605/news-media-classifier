@@ -6,13 +6,10 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-links_list = []
-
-
 @app.route("/")
 def index():
     conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM clickbait_score ORDER BY publisher").fetchall()
+    rows = conn.execute("SELECT * FROM clickbait_score ORDER BY score").fetchall()
     conn.close()
 
     medias = [
@@ -23,18 +20,33 @@ def index():
     return render_template("index.html", medias=medias)
 
 
-@app.route("/data")
-def data():
-    return render_template("data.html")
-
-
 @app.route("/submit", methods=["POST"])
 def submit_form():
-    global links_list
-    links = [request.form.get(f"link{i}") for i in range(1, 4)]
-    links_list.extend(links)
-    print("Links list:", links_list)
-    return render_template("result.html", links=links_list)
+    links = request.form.get("links", "").split("\n")
+    conn = get_db_connection()
+
+    for article in links:
+        metadata = get_metadata(article)
+        news_title = metadata["Title"]
+        publisher = metadata["Publisher"]
+        score = get_clickbait_score(news_title)
+        script = f"INSERT OR IGNORE INTO clickbait_score(publisher, article, score) VALUES('{publisher}' ,'{article}', '{score}')"
+        conn.execute(script)
+
+    conn.commit()
+
+    rows = conn.execute("SELECT * FROM clickbait_score ORDER BY score").fetchall()
+
+    medias = [
+        (key, aggregate_score(list(group)))
+        for key, group in groupby(rows, lambda x: x["publisher"])
+    ]
+
+    print(medias)
+
+    conn.close()
+
+    return render_template("result.html", medias=medias)
 
 
 @app.route("/news", methods=["POST"])
@@ -53,6 +65,8 @@ def news():
         conn.execute(script)
 
     conn.commit()
+
+
     conn.close()
 
     return "500 Ok"
