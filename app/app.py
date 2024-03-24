@@ -15,10 +15,6 @@ def index():
 def data():
     return render_template("data.html")
 
-@app.route("/form")
-def form():
-    return render_template("form.html")
-
 @app.route('/submit', methods=["POST"])
 def submit_form():
     global links_list
