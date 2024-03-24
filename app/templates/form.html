@@ -1,12 +1,13 @@
 <div class="flex items-center justify-center">
   <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg max-w-md w-full">
-    <form hx-post="/submit" hx-target="#results">
+    <form hx-post="/submit" hx-target="#results" hx-indicator="#spinner">
       <h1 class="text-xl font-semibold mb-4">Check media source</h1>
       <p class="text-gray-600 mb-6">
-        Insert 3 articles from the media source you want to check.
+        Insert some articles from the media sources you want to check.
       </p>
       <div class="mb-4">
         <textarea
+          id="links"
           type="text"
           placeholder="https://diez.md/2024/0...
 https://agora.md/2024/03...
@@ -18,11 +19,35 @@ https://unimedia.info/2024/03..."
         ></textarea>
       </div>
       <button
+        type="button"
+        onclick="fillTextarea()"
+        class="w-full mb-4 flex justify-center gap-4 items-center bg-green-300 text-white px-4 py-2 rounded-lg hover:bg-green-400 focus:outline-none"
+      >
+        Sample data
+      </button>
+      <button
         type="submit"
-        class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
+        class="w-full flex justify-center gap-4 items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
       >
         Submit
+        <img
+          id="spinner"
+          class="htmx-indicator"
+          class="w-6 h-6"
+          src="https://htmx.org/img/bars.svg"
+        />
       </button>
     </form>
   </div>
+  <script>
+    function fillTextarea() {
+      // Sample data
+      var sampleData = `https://diez.md/2024/03/24/antreprenorii-din-moldova-sunt-invitati-sa-participe-la-concursul-premiul-pentru-realizari-in-domeniul-calitatii-produselor-si-serviciilor/
+https://www.zdg.md/stiri/noi-detalii-despre-atacul-de-la-crocus-city-hall-de-la-proprietarul-salii-de-concerte/
+https://stiri.md/article/international/atac-terorist-in-crocus-city-hall-din-moscova-cel-putin-40-persoane-ucise`;
+
+      // Fill the textarea with sample data
+      document.getElementById("links").value = sampleData;
+    }
+  </script>
 </div>
