@@ -1,57 +1,80 @@
 import requests
 import json
+import sqlite3
+from itertools import groupby
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 links_list = []
 
+
 @app.route("/")
 def index():
-    return render_template("index.html", articles=[i for i in range(1, 20)])
+    conn = get_db_connection()
+    rows = conn.execute("SELECT * FROM clickbait_score ORDER BY publisher").fetchall()
+    conn.close()
+
+    articles = [
+        (key, aggregate_score(list(group)))
+        for key, group in groupby(rows, lambda x: x["publisher"])
+    ]
+
+    return render_template("index.html", articles=articles)
 
 
 @app.route("/data")
 def data():
     return render_template("data.html")
 
-@app.route('/submit', methods=["POST"])
+
+@app.route("/submit", methods=["POST"])
 def submit_form():
     global links_list
-    links = [request.form.get(f"link{i}") for i in range(1,4)]
+    links = [request.form.get(f"link{i}") for i in range(1, 4)]
     links_list.extend(links)
     print("Links list:", links_list)
-    return render_template('result.html', links=links_list)
+    return render_template("result.html", links=links_list)
 
 
 @app.route("/news", methods=["POST"])
 def news():
-    news = list(request.json)
 
-    return [get_score(x) for x in news]
+    articles = list(request.json)
 
+    conn = get_db_connection()
 
-def get_score(url: str) -> float:
-    metadata = get_metadata(url)
-    news_title = metadata["Title"]
-    clickbait_scores = get_clickbait_score(news_title)
-    return get_clickbaitness(clickbait_scores)
+    for article in articles:
+        metadata = get_metadata(article)
+        news_title = metadata["Title"]
+        publisher = metadata["Publisher"]
+        score = get_clickbait_score(news_title)
+        script = f"INSERT OR IGNORE INTO clickbait_score(publisher, article, score) VALUES('{publisher}' ,'{article}', '{score}')"
+        conn.execute(script)
+
+    conn.commit()
+    conn.close()
+
+    return "500 Ok"
 
 
 def get_metadata(url: str):
     metadata_request = {"content": url, "language": "EMPTY"}
     metadata_response = requests.post(
-        "https://0604-93-113-114-106.ngrok-free.app/rest/process", json=metadata_request
+        "https://d9bf-93-113-114-106.ngrok-free.app/rest/process",
+        json=metadata_request,
     )
     return json.loads(metadata_response.text)
 
 
-def get_clickbait_score(title: str):
+def get_clickbait_score(title: str) -> float:
     click_bait_request = {"content": title, "language": "ron"}
     clickbait_response = requests.post(
-        "https://c952-93-113-114-106.ngrok-free.app/rest/process", json=click_bait_request
+        "https://2017-93-113-114-106.ngrok-free.app/rest/process",
+        json=click_bait_request,
     )
-    return json.loads(clickbait_response.text)
+    scores = json.loads(clickbait_response.text)
+    return get_clickbaitness(scores)
 
 
 def get_clickbaitness(scores) -> float:
@@ -60,6 +83,26 @@ def get_clickbaitness(scores) -> float:
             return 1 - score["score"]
         if score["label"] == "not clickbait":
             return score["score"]
+
+
+def aggregate_score(articles) -> float:
+    total = sum([x["score"] for x in articles])
+    return total * 100 / len(articles)
+
+
+def get_db_connection():
+    conn = sqlite3.connect("database.db")
+    conn.row_factory = sqlite3.Row
+    script = """
+    CREATE TABLE IF NOT EXISTS clickbait_score (
+        article TEXT PRIMARY KEY,
+        publisher TEXT NOT NULL,
+        score REAL NOT NULL
+    );
+    """
+    conn.executescript(script)
+    return conn
+
 
 if __name__ == "__main__":
     app.run(debug=True)
