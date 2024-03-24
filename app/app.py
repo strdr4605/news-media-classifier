@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     conn = get_db_connection()
-    rows = conn.execute("SELECT * FROM clickbait_score ORDER BY score").fetchall()
+    rows = conn.execute("SELECT * FROM clickbait_score ORDER BY publisher").fetchall()
     conn.close()
 
     medias = [
@@ -17,7 +17,7 @@ def index():
         for key, group in groupby(rows, lambda x: x["publisher"])
     ]
 
-    return render_template("index.html", medias=medias)
+    return render_template("index.html", medias=sorted(medias, key=lambda x: x[1], reverse=True))
 
 
 @app.route("/submit", methods=["POST"])
@@ -35,7 +35,7 @@ def submit_form():
 
     conn.commit()
 
-    rows = conn.execute("SELECT * FROM clickbait_score ORDER BY score").fetchall()
+    rows = conn.execute("SELECT * FROM clickbait_score ORDER BY publisher").fetchall()
 
     medias = [
         (key, aggregate_score(list(group)))
@@ -46,7 +46,7 @@ def submit_form():
 
     conn.close()
 
-    return render_template("result.html", medias=medias)
+    return render_template("result.html", medias=sorted(medias, key=lambda x: x[1], reverse=True))
 
 
 @app.route("/news", methods=["POST"])
