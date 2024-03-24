@@ -1,43 +1,43 @@
 <div class="flex items-center justify-center">
-  <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg max-w-md w-full">
-    <form hx-post="/submit" hx-target="#results">
-      <h1 class="text-xl font-semibold mb-4">Check media source</h1>
-      <p class="text-gray-600 mb-6">
-        Insert 3 articles from the media source you want to check.
-      </p>
-      <div class="mb-4">
-        <input
-          type="text"
-          placeholder="https://diez.md/2024/03/23/tot-ce-s..."
-          name="link1"
-          required
-          class="text-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500"
-        />
-      </div>
-      <div class="mb-4">
-        <input
-          type="text"
-          placeholder="https://diez.md/2024/03/22/noi..."
-          name="link2"
-          required
-          class="text-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500"
-        />
-      </div>
-      <div class="mb-4">
-        <input
-          type="text"
-          placeholder="https://diez.md/2024/03/01/maia..."
-          name="link3"
-          required
-          class="text-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500"
-        />
-      </div>
-      <button
-        type="submit"
-        class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
-      >
-        Submit
-      </button>
-    </form>
-  </div>
+    <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg max-w-md w-full">
+        <form hx-post="/submit" hx-target="#results" hx-on::after-request="this.reset()">
+            <h1 class="text-xl font-semibold mb-4">Check media source</h1>
+            <p class="text-gray-600 mb-6">
+                Insert 3 articles from the media source you want to check.
+            </p>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        placeholder="https://diez.md/2024/03/23/tot-ce-s..."
+                        name="link1"
+                        required
+                        class="text-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500"
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        placeholder="https://diez.md/2024/03/22/noi..."
+                        name="link2"
+                        required
+                        class="text-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500"
+                />
+            </div>
+            <div class="mb-4">
+                <input
+                        type="text"
+                        placeholder="https://diez.md/2024/03/01/maia..."
+                        name="link3"
+                        required
+                        class="text-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:border-blue-500"
+                />
+            </div>
+            <button
+                    type="submit"
+                    class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none"
+            >
+                Submit
+            </button>
+        </form>
+    </div>
 </div>
