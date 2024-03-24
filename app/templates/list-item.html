@@ -2,7 +2,9 @@
   class="p-5 bg-white rounded-lg flex items-center justify-between space-x-8"
 >
   <div class="flex-1 flex justify-between items-center">
-    <div class="w-24 h-6 rounded-lg bg-purple-300"></div>
-    <div class="min-h-6 w-48 px-2 bg-gray-300 rounded"> {{ link }}</div>
+    <div class="px-2 py-1 rounded-lg bg-purple-300">{{ media[1] | int }}</div>
+    <div class="min-h-6 w-48 md:w-96 px-4 py-1 bg-gray-200 rounded">
+      {{ media[0] }}
+    </div>
   </div>
 </div>
