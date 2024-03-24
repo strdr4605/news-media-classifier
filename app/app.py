@@ -75,7 +75,7 @@ def news():
 def get_metadata(url: str):
     metadata_request = {"content": url, "language": "EMPTY"}
     metadata_response = requests.post(
-        "localhost:8990/rest/process",
+        "http://127.0.0.1:8990/rest/process",
         json=metadata_request,
     )
     return json.loads(metadata_response.text)
@@ -84,7 +84,7 @@ def get_metadata(url: str):
 def get_clickbait_score(title: str) -> float:
     click_bait_request = {"content": title, "language": "ron"}
     clickbait_response = requests.post(
-        "localhost:8994/rest/process",
+        "http://127.0.0.1:8994/rest/process",
         json=click_bait_request,
     )
     scores = json.loads(clickbait_response.text)
