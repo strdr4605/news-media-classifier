@@ -1,16 +1,10 @@
 <!-- templates/index.html -->
 {% extends 'base.html' %}
 {% block content %}
-    <section class="pt-12 flex overflow-y-scroll">
-        <div id="left" class="w-1/2 pt-24 p-4">
+    <section class="pt-12 flex flex-col-reverse md:flex-row overflow-y-scroll">
+        <div id="left" class="md:w-1/2 pt-6 md:pt-24 p-4">
             <div class="bg-gray-50  flex items-center justify-center px-8 py-4">
                 <div class="relative w-full max-w-lg">
-                    <!-- <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob "> -->
-                    <!-- </div> -->
-                    <!-- <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"> -->
-                    <!-- </div> -->
-                    <!-- <div class="absolute -bottom-32 left-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"> -->
-                    <!-- </div> -->
                     <div class="relative space-y-4 max-h-[500px] overflow-y-scroll" id="results">
                         {% for article in articles %}
                             {% include 'list-item.html' %}
@@ -19,6 +13,6 @@
                 </div>
             </div>
         </div>
-        <div id="right" class="w-1/2">{% include 'form.html' %}</div>
+        <div id="right" class="md:w-1/2 p-2 md:p-0">{% include 'form.html' %}</div>
     </section>
 {% endblock content %}
