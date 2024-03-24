@@ -15,12 +15,12 @@ def index():
     rows = conn.execute("SELECT * FROM clickbait_score ORDER BY publisher").fetchall()
     conn.close()
 
-    articles = [
+    medias = [
         (key, aggregate_score(list(group)))
         for key, group in groupby(rows, lambda x: x["publisher"])
     ]
 
-    return render_template("index.html", articles=articles)
+    return render_template("index.html", medias=medias)
 
 
 @app.route("/data")
