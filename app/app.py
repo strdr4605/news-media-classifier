@@ -6,6 +6,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def index():
     conn = get_db_connection()
@@ -13,11 +14,15 @@ def index():
     conn.close()
 
     medias = [
-        (key, aggregate_score(list(group)))
-        for key, group in groupby(rows, lambda x: x["publisher"])
+        (key, list(group)) for key, group in groupby(rows, lambda x: x["publisher"])
+    ]
+    medias = [
+        (key, aggregate_score(list(group)), len(list(group))) for key, group in medias
     ]
 
-    return render_template("index.html", medias=sorted(medias, key=lambda x: x[1], reverse=True))
+    return render_template(
+        "index.html", medias=sorted(medias, key=lambda x: x[1], reverse=True)
+    )
 
 
 @app.route("/submit", methods=["POST"])
@@ -36,17 +41,18 @@ def submit_form():
     conn.commit()
 
     rows = conn.execute("SELECT * FROM clickbait_score ORDER BY publisher").fetchall()
-
-    medias = [
-        (key, aggregate_score(list(group)))
-        for key, group in groupby(rows, lambda x: x["publisher"])
-    ]
-
-    print(medias)
-
     conn.close()
 
-    return render_template("result.html", medias=sorted(medias, key=lambda x: x[1], reverse=True))
+    medias = [
+        (key, list(group)) for key, group in groupby(rows, lambda x: x["publisher"])
+    ]
+    medias = [
+        (key, aggregate_score(list(group)), len(list(group))) for key, group in medias
+    ]
+
+    return render_template(
+        "result.html", medias=sorted(medias, key=lambda x: x[1], reverse=True)
+    )
 
 
 @app.route("/news", methods=["POST"])
@@ -65,7 +71,6 @@ def news():
         conn.execute(script)
 
     conn.commit()
-
 
     conn.close()
 
